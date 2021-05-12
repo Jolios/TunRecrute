@@ -1,0 +1,111 @@
+﻿@using cloudscribe.Pagination.Models
+@model PagedResult<Advertisement>
+@{
+    Layout = "~/Views/Profile/_Layout.cshtml";
+    ViewBag.Title = "My Jobs";
+}
+
+<div class="alice-bg section-padding-bottom">
+    <div class="container no-gliters">
+        <div class="row no-gliters">
+            <div class="col">
+                <div class="dashboard-container">
+                    <div class="dashboard-content-wrapper">
+                        <div class="manage-job-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <th>Applications</th>
+                                        <th class="action">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (Advertisement ad in Model.Data)
+                                    {
+                                    <tr class="job-items">
+                                        <td class="title">
+                                            <h5><a href="#">@ad.Title</a></h5>
+                                            <div class="info">
+                                                <span class="office-location"><a href="#"><i data-feather="map-pin"></i>@ad.WorkAddress</a></span>
+                                                <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>@ad.WorkHours h / week</a></span>
+                                                <span class="job-type part-time"><a href="#"><i data-feather="file"></i>@ad.Contract</a></span>
+                                            </div>
+                                        </td>
+                                        <td class="application">
+                                            <a asp-controller="Candidacy" asp-action="AdCandidacies" asp-route-adId="@ad.Id" target="_blank">
+                                                @{ 
+                                                    int s = 0;
+                                                    foreach(Candidacy c in ad.Candidacies)
+                                                    {
+                                                        if (!c.Status.Equals("rejected") || !c.Status.Equals("shortlisted")) s += 1;
+                                                    }
+                                                }
+                                                
+                                                @s Application(s)
+                                            </a>
+                                        </td>
+                                        <td class="action">
+                                            <a asp-action="Show" asp-route-id="@ad.Id" class="preview" title="Preview" target="_blank"><i data-feather="eye"></i></a>
+                                            <a asp-action="Edit" asp-route-id="@ad.Id"class="edit" title="Edit" target="_blank"><i data-feather="edit"></i></a>
+                                            <a asp-action="Delete" asp-route-id="@ad.Id" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="pagination-list text-center">
+                                <nav class="navigation pagination">
+                                    <div class="nav-links">
+                                        <cs-pager cs-paging-pagesize="@Model.PageSize"
+                                                  cs-paging-pagenumber="@Model.PageNumber"
+                                                  cs-paging-totalitems="@Model.TotalItems"
+                                                  cs-pagenumber-param="pageNumber"
+                                                  cs-previous-page-text="Previous"
+                                                  cs-next-page-text="Next"
+                                                  asp-controller="Advertisement"
+                                                  asp-action="MyJobs"
+                                                  cs-pager-li-current-class="page-item active"
+                                                  cs-pager-li-other-class="page-item"
+                                                  cs-pager-li-non-active-class="page-item disabled"
+                                                  cs-pager-link-current-class="page-link"
+                                                  cs-pager-link-other-class="page-link">
+                                        </cs-pager>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-sidebar">
+                        <div class="company-info">
+                            <div class="thumb">
+                                <img src="{{ asset('Uploads/User_Images/')~app.user.picture }}" class="img-fluid" alt="">
+                            </div>
+                            <div class="company-body">
+                                <h5>{{ app.user.compname }}</h5>
+                            </div>
+                        </div>
+                        <div class="dashboard-menu">
+                            <ul>
+                                <li><i class="fas fa-user"></i><a href="{{ path('edit_profile') }}">Edit Profile</a></li>
+                                <li class="active"><i class="fas fa-briefcase"></i><a href="{{ path('mes_annonces') }}l">Manage Jobs</a></li>
+                                <li><i class="fas fa-users"></i><a href="{{ path('candidature_index') }}">Manage Candidates</a></li>
+                                <li><i class="fas fa-calendar-check"></i><a href="{{ path('managed_applications') }}">Managed Applications</a></li>
+                                <li><i class="fas fa-plus-square"></i><a href="{{ path('annonce_new') }}">Post New Job</a></li>
+                            </ul>
+
+                            <ul class="delete">
+                                <li><i class="fas fa-power-off"></i><a href="{{ path('app_logout') }}">Logout</a></li>
+                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                            </ul>
+                            <!-- Modal -->
+                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                                {{ render(controller('App\\Controller\\ProfileController::deactivate',{'id':app.user.id})) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

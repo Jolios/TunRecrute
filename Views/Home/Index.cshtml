@@ -1,0 +1,184 @@
+﻿@model IEnumerable<Advertisement>
+@inject SignInManager<User> siginManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Post a job position or create your online resume by TheJobs!">
+    <meta name="keywords" content="">
+
+    <title>Welcome</title>
+
+    <!-- Styles -->
+    <link href="~/css/app.min.css" rel="stylesheet">
+    <link href="~/css/custom.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Oswald:100,300,400,500,600,800%7COpen+Sans:300,400,500,600,700,800%7CMontserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Favicons -->
+    <link rel="icon" href="~/img/speaker.ico">
+    <style>
+    @@font-face { font-family: themify; src: url('@Url.Content("~/fonts/themify.eot")'); src: url('@Url.Content("~/fonts/themify.eot")') format('embedded-opentype'),url('@Url.Content("~/fonts/themify.woff")') format('woff'),url('@Url.Content("~/fonts/themify.ttf")') format('truetype'),url('@Url.Content("~/fonts/themify.svg")') format('svg'); font-weight: 400; font-style: normal }
+    @@font-face { font-family:FontAwesome; src:url('@Url.Content("~/fonts/fontawesome-webfont.eot")');src:url('@Url.Content("~/fonts/fontawesome-webfont.eot")') format('embedded-opentype'),url('@Url.Content("~/fonts/fontawesome-webfont.woff2")') format('woff2'),url('@Url.Content("~//fonts/fontawesome-webfont.woff")') format('woff'),url('@Url.Content("~/fonts/fontawesome-webfont.ttf")') format('truetype'),url('@Url.Content("~/fonts/fontawesome-webfont.svg")') format('svg');font-weight:400;font-style:normal}
+    </style>
+</head>
+<body class="nav-on-header smart-nav">
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <div class="container">
+            <!-- Logo -->
+            <div class="pull-left">
+                <div class="logo-wrapper">
+                    <a class="logo" asp-action="Index"><img src="~/img/speaker.png" alt="logo"></a>
+                    <a class="logo-alt" asp-action="Index"><img src="~/img/speaker.png" alt="logo-alt"></a>
+                </div>
+            </div>
+            <!-- END Logo -->
+            <!-- User account -->
+            @if (siginManager.IsSignedIn(User))
+            {
+                var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
+                <div class="pull-right">
+                    <div class="dropdown user-account">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            @if (!String.IsNullOrEmpty(user.Picture))
+                            {
+                                <img src="~/uploads/UserImages/@user.Picture" alt="avatar">
+                            }
+                            else
+                            {
+                                <img src="~/img/profile.png" alt="avatar">
+                            }
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#">Edit Profile</a></li>
+                            <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="pull-right user-login">
+                    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Login">Login</a> or <a asp-controller="Account" asp-action="ChooseRole">register</a>
+                </div>
+            }
+
+            <!-- END User account -->
+            <!-- Navigation menu -->
+            <!-- END Navigation menu -->
+        </div>
+    </nav>
+    <!-- END Navigation bar -->
+    <!-- Site header -->
+    <header class="site-header size-lg text-center" style="background-image: url('@Url.Content("~/img/wallhaven-r7z7z1.jpg")')">
+        <div class="container">
+            <div class="col-xs-12">
+                <br><br>
+                <h2>Welcome to<mark>TunRecrute</mark>!</h2>
+                <h5 class="font-alt">Start searching for a job opportunity right now</h5>
+                <br><br><br>
+                <form class="header-job-search" action="" method="post">
+                    <div class="input-keyword">
+                        <input type="text" class="form-control" name="titre" placeholder="Job title, skills, or company">
+                    </div>
+                    <div class="input-location">
+                        <input type="text" class="form-control" name="address" placeholder="City or state">
+                    </div>
+                    <div class="btn-search">
+                        <button class="btn btn-primary" type="submit">Find jobs</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+    <!-- END Site header -->
+    <!-- Main container -->
+    <main>
+        <!-- Recent jobs -->
+        <section>
+            <div class="container">
+                <header class="section-header">
+                    <span>Latest</span>
+                    <h2>Recent jobs</h2>
+                </header>
+                <div class="row item-blocks-connected">
+                    @if (Model.Count() > 0)
+                    {
+                        @foreach (Advertisement ad in Model)
+                        {
+                            <!-- Job item -->
+                            <div class="col-xs-12">
+                                <a class="item-block" href="#">
+                                    <header>
+                                        <img src="~/uploads/UserImages/@ad.User.Picture">
+                                        <div class="hgroup">
+                                            <h4>@ad.Title</h4>
+                                            <h5>@ad.User.CompanyName</h5>
+                                        </div>
+                                        <div class="header-meta">
+                                            <span class="location">@ad.WorkAddress</span>
+                                            <span class="label label-success">@ad.Contract</span>
+                                        </div>
+                                    </header>
+                                </a>
+                            </div>
+                            <!-- END Job item -->
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-xs-12">
+                            No jobs Yet !!!
+                        </div>
+                    }
+                </div>
+                <br><br>
+                <p class="text-center"><a class="btn btn-info" asp-controller="Advertisement" asp-action="Index">Browse all jobs</a></p>
+            </div>
+        </section>
+        <!-- Facts -->
+        <section class="bg-img bg-repeat no-overlay section-sm">
+            <div class="container">
+                <div class="counter col-md-6 col-sm-6">
+                    <p><span data-from="0" data-to="@ViewBag.jobsCount"></span>+</p>
+                    <h6>Jobs</h6>
+                </div>
+                <div class="counter col-md-6 col-sm-6">
+                    <p><span data-from="0" data-to="@ViewBag.usersCount"></span>+</p>
+                    <h6>Users</h6>
+                </div>
+            </div>
+        </section>
+        <!-- END Facts -->
+    </main>
+    <!-- END Main container -->
+    <!-- Site footer -->
+    <footer class="site-footer">
+        <!-- Bottom section -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <ul class="social-icons">
+                        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- END Bottom section -->
+    </footer>
+    <!-- END Site footer -->
+    <!-- Back to top button -->
+    <a id="scroll-up" href="#"><i class="ti-angle-up"></i></a>
+    <!-- END Back to top button -->
+    <!-- Scripts -->
+    <script src="~/js/app.min.js"></script>
+    <script src="~/js/custom.js"></script>
+</body>
+</html>

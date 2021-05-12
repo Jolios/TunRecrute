@@ -1,0 +1,117 @@
+﻿@using cloudscribe.Pagination.Models 
+@model PagedResult<Candidacy>
+@inject SignInManager<User> signInManager
+@{
+    Layout = "~/Views/Profile/_Layout.cshtml";
+    ViewBag.Title = "Applications";
+    User user = await signInManager.UserManager.GetUserAsync(this.User);
+}
+<div class="alice-bg section-padding-bottom">
+    <div class="container no-gliters">
+        <div class="row no-gliters">
+            <div class="col">
+                <div class="dashboard-container">
+                    <div class="dashboard-content-wrapper">
+                        <div class="manage-candidate-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Candidate</th>
+                                        <th>Job applied to</th>
+                                        <th>Status</th>
+                                        <th class="action">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Data.Count == 0) {
+                                @:</tbody>
+                            @:</table>
+                            <div style="margin-left:295px;margin-top:70px;font-size: 1.4rem;font-family: 'Poppins', sans-serif; font-weight: 500; color: #6f7484;">
+                                No Application(s) To Manage Yet
+                            </div>
+                                    } else {
+                                        foreach (Candidacy c in Model.Data) {
+                                            if (!c.Status.Equals("rejected") && !c.Status.Equals("shortlisted")) { 
+                            <tr class="candidates-list">
+                                <td class="title" style="margin-right: -70px;">
+                                    <div class="thumb">
+                                        <img src="~/uploads/UserImages/@c.User.Picture"  class="img-fluid" alt="">
+                                    </div>
+                                    <div class="body">
+                                        <h5><a asp-action="ResumeForEmployer" asp-controller="Profile" asp-route-id="@c.User.Id" target="_blank">@c.User.Firstname @c.User.Lastname</a></h5>
+                                    </div>
+                                </td>
+                                <td class="status">
+                                    <h5 style="color: #232630"><a asp-action="Show" asp-controller="Advertisement" asp-route-id="@c.Advertisement.Id" target="_blank">@c.Advertisement.Title</a></h5>
+                                </td>
+                                <td class="status">
+                                    @if (String.IsNullOrEmpty(c.Status)) {
+                                        <span>>N / A</span>
+                                    }else if (c.Status.Equals("shortlisted")){ 
+                                    <i data-feather="check-circle"></i><span>Shortlisted</span>
+                                    }
+                                </td>
+                                <td class="action">
+                                    <a asp-action="ChangeStatus" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="shortlisted" class="download"><i data-feather="check-circle"></i></a>
+                                    <a asp-action="ChangeStatus" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="rejected"  class="remove"><i data-feather="x-circle"></i></a>
+                                </td>
+                            </tr>
+                                            }
+                                        }
+                                    }
+                            </tbody>
+                            </table>
+                            <div class="pagination-list text-center">
+                                <nav class="navigation pagination">
+                                    <div class="nav-links">
+                                        <cs-pager cs-paging-pagesize="@Model.PageSize"
+                                                  cs-paging-pagenumber="@Model.PageNumber"
+                                                  cs-paging-totalitems="@Model.TotalItems"
+                                                  cs-pagenumber-param="pageNumber"
+                                                  cs-previous-page-text="Previous"
+                                                  cs-next-page-text="Next"
+                                                  asp-controller="Candidacy"
+                                                  asp-action="Applications"
+                                                  cs-pager-li-current-class="page-item active"
+                                                  cs-pager-li-other-class="page-item"
+                                                  cs-pager-li-non-active-class="page-item disabled"
+                                                  cs-pager-link-current-class="page-link"
+                                                  cs-pager-link-other-class="page-link">
+                                        </cs-pager>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-sidebar">
+                        <div class="company-info">
+                            <div class="thumb">
+                                <img src="~/uploads/UserImages/@user.Picture" class="img-fluid" alt="">
+                            </div>
+                            <div class="company-body">
+                                <h5>@user.CompanyName</h5>
+                            </div>
+                        </div>
+                        <div class="dashboard-menu">
+                            <ul>
+                                <li><i class="fas fa-user"></i><a asp-action="EditEmployerProfile">Edit Profile</a></li>
+                                <li><i class="fas fa-briefcase"></i><a asp-action="MyJobs" asp-controller="Advertisement">Manage Jobs</a></li>
+                                <li class="active"><i class="fas fa-users"></i><a asp-action="Applications" asp-controller="Candidacy">Manage Candidates</a></li>
+                                <li><i class="fas fa-calendar-check"></i><a asp-action="ManagedApplications" asp-controller="Candidacy">Managed Applications</a></li>
+                                <li><i class="fas fa-plus-square"></i><a asp-action="Create" asp-controller="Advertisement">Post New Job</a></li>
+                            </ul>
+                            <ul class="delete">
+                                <li><i class="fas fa-power-off"></i><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                            </ul>
+                            <!-- Modal -->
+                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                                @*{ render(controller('App\\Controller\\ProfileController::deactivate',{'id':app.user.id})) }}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

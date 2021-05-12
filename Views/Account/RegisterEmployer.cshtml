@@ -1,0 +1,112 @@
+﻿@model Tunrecrute.ViewModels.EmployerRegistrationViewModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <link rel="icon" href="~/img/speaker.ico">
+
+    <title>Welcome!</title>
+    <link href="~/css/app.min.css" rel="stylesheet">
+    <link href="~/css/thejobs.css" rel="stylesheet">
+    <link href="~/css/custom.css" rel="stylesheet">
+    <link href="~/css/noty.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/css/koukicons.css">
+
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Oswald:100,300,400,500,600,800%7COpen+Sans:300,400,500,600,700,800%7CMontserrat:400,700' rel='stylesheet' type='text/css'>
+
+
+    <!--JQUERY -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+
+</head>
+<body class="nav-on-header smart-nav">
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <div class="container">
+
+            <!-- Logo -->
+            <div class="pull-left">
+                <a class="navbar-toggle" href="index.php" data-toggle="offcanvas"><i class="ti-menu"></i></a>
+
+                <div class="logo-wrapper">
+                    <a class="logo" href="#"><img src="~/img/speaker.png" alt="logo"></a>
+                    <a class="logo-alt" href="#"><img src="~/img/speaker.png" alt="logo-alt"></a>
+                </div>
+
+            </div>
+            <!-- END Logo -->
+            <!-- User account -->
+            <div class="pull-right user-login">
+                <a class="btn btn-sm btn-primary" asp-action="Login"><i class="kk kk-Key"></i>&nbsp;Login</a>
+            </div>
+            <!-- END User account -->
+
+
+
+        </div>
+    </nav>
+
+
+    <!-- Site header -->
+    <header class="site-header size-lg text-center" style="background-image: url('@Url.Content("~/img/wallhaven-eovv3r.jpg")')">
+        <div class="container">
+            <div class="col-xs-12">
+                <main>
+
+                    <div class="login-block">
+
+                        <img src="~/img/briefcase.png" height="80px" alt="">
+
+                        <h1>Employer Registration</h1>
+
+                        <form method="post">
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ti-user"></i></span>
+                                    <input asp-for="Email" placeholder="Email" class="form-control" />
+                                    <span class="input-group-addon"><i class="ti-user"></i></span>
+                                    <input asp-for="CompanyName" placeholder="Company Name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ti-user"></i></span>
+                                    <input asp-for="PhoneNumber" placeholder="Phone Number" class="form-control" />
+                                    <span class="input-group-addon"><i class="ti-user"></i></span>
+                                    <input asp-for="Address" placeholder="Address" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="ti-user"></i></span>
+                                    <input asp-for="Password" placeholder="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                                    <span class="input-group-addon"><i class="ti-user"></i></span>
+                                    <input asp-for="ConfirmPassword" placeholder="Confirm Password" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </form>
+                        <div id="ack"></div>
+
+                    </div>
+
+                </main>
+                <!-- Scripts -->
+                <script src="~/js/noty.js"></script>
+                <script src="~/js/myscript.js"></script>
+    </body>
+</html>
+    
+<!--{% for flashError in app.flashes('verify_email_error') %}
+<div class="alert alert-danger" role="alert">{ flashError }</div>
+{% endfor %}-->

@@ -1,0 +1,81 @@
+﻿@using cloudscribe.Pagination.Models
+@inject SignInManager<User> signInManager
+@model List<Candidacy>
+@{ 
+    User user = await signInManager.UserManager.GetUserAsync(this.User);
+    Layout = "~/Views/Profile/_Layout.cshtml";
+    ViewBag.Title = "My Applications";
+}
+<div class="alice-bg section-padding-bottom">
+    <div class="container no-gliters">
+        <div class="row no-gliters">
+            <div class="col">
+                <div class="dashboard-container">
+                    <div class="dashboard-content-wrapper">
+                        <div class="dashboard-applied">
+                            <h4 class="apply-title">@Model.Count Job(s) Applied</h4>
+                            <div class="dashboard-apply-area">
+                                @foreach (Candidacy c in Model) {
+                                <div class="job-list">
+                                    <div class="thumb">
+                                        <a href="#">
+                                            <img src="~/uploads/UserImages/@c.Advertisement.User.Picture" class="img-fluid" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <h4><a asp-action="Show" asp-controller="Advertisement" asp-route-id="@c.Advertisement.Id">@c.Advertisement.Title</a></h4>
+                                            <div class="info">
+                                                <span class="company"><a href="#"><i data-feather="briefcase"></i>@c.Advertisement.User.CompanyName</a></span>
+                                                <span class="office-location"><a href="#"><i data-feather="map-pin"></i>@c.Advertisement.WorkAddress</a></span>
+                                                <span class="job-type part-time"><a href="#"><i data-feather="file"></i>@c.Advertisement.Contract</a></span>
+                                                @if (String.IsNullOrEmpty(c.Status))
+                                                {<span class="status"><i data-feather="clock"></i> Application Pending</span>}
+                                                @if (c.Status.Equals("shortlisted"))
+                                                {<span class="status" style="color: #01d13d;"><i data-feather="check-circle" style="color: #01d13d;"></i> Shortlisted! Check your email!</span>}
+                                                @if (c.Status.Equals("rejected"))
+                                                {<span class="status" style="color: #ff3366;"><i data-feather="x-circle" style="color: #ff3366;"></i>Rejected :( </span>}
+                                                </div>
+                                        </div>
+                                        <div class="more">
+                                            <form>
+                                                <a href="{{ path('candidature_delete',{'UserId':cand.user.id,'AnnonceId':cand.annonce.id}) }}" class="bookmark-remove" onclick="this.form.submit()"><i class="fas fa-times"></i></a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-sidebar">
+                        <div class="user-info">
+                            <div class="thumb">
+                                <img src="~/uploads/UserImages/@user.Picture" class="img-fluid" alt="">
+                            </div>
+                            <div class="user-body">
+                                <h5>@user.Firstname @user.Lastname</h5>
+                            </div>
+                        </div>
+                        <div class="dashboard-menu">
+                            <ul>
+                                <li><i class="fas fa-user"></i><a asp-action="EditCandidateProfile">Edit Profile</a></li>
+                                <li><i class="fas fa-file-alt"></i><a asp-action="Resume">Resume</a></li>
+                                <li><i class="fas fa-edit"></i><a asp-action="EditResume">Edit Resume</a></li>
+                                <li class="active"><i class="fas fa-check-square"></i><a asp-action="AppliedJobs">Applied Job</a></li>
+                            </ul>
+                            <ul class="delete">
+                                <li><i class="fas fa-power-off"></i><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                            </ul>
+                            <!-- Modal -->
+                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                                {{ render(controller('App\\Controller\\ProfileController::deactivate',{'id':app.user.id})) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

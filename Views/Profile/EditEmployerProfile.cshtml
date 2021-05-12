@@ -1,0 +1,183 @@
+﻿@model Tunrecrute.ViewModels.EditEmployerViewModel
+@{
+    Layout = "~/Views/Profile/_Layout.cshtml";
+}
+<div class="alice-bg section-padding-bottom">
+    <div class="container no-gliters">
+        <div class="row no-gliters">
+            <div class="col">
+                <div class="dashboard-container">
+                    <div class="dashboard-content-wrapper">
+                        <form asp-action="EditEmployerProfile" method="post" class="dashboard-form">
+                            <div class="dashboard-section upload-profile-photo">
+                                <div class="update-photo">
+                                    <img class="image" src="~/uploads/UserImages/@Model.Employer.Picture" alt="">
+                                </div>
+                                <div class="file-upload">
+                                    <span>Change Avatar</span>
+                                    <input asp-for="ImageFile" accept="image/*" class="file-input custom-file-input" />
+                                </div>
+                            </div>
+                            <div class="dashboard-section basic-info-input">
+                                <h4><i data-feather="user-check"></i>Basic Info</h4>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Company Name</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Employer.CompanyName" class="form-control" placeholder="Company Name" />
+                                        <span asp-validation-for="Employer.CompanyName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Email Address</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Employer.Email" class="form-control" placeholder="email@example.com" />
+                                        <span asp-validation-for="Employer.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Phone</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Employer.PhoneNumber" class="form-control" placeholder="12 345 678" />
+                                        <span asp-validation-for="Employer.PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Address</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Employer.Address" class="form-control" placeholder="Ariana" />
+                                        <span asp-validation-for="Employer.Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">About Us</label>
+                                    <div class="col-sm-9">
+                                        <textarea asp-for="Employer.AboutMe" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-section media-inputs">
+                                <h4><i data-feather="image"></i>Video</h4>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Intro Video</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Link</div>
+                                            </div>
+                                            <input asp-for="social.Youtube" class="form-control" placeholder="https://www.youtube.com/watch?v=ZRkdyjJ_489M" />
+                                            <span asp-validation-for="social.Youtube" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-section social-inputs">
+                                <h4><i data-feather="cast"></i>Social Networks</h4>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Social Links</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fab fa-facebook-f"></i></div>
+                                            </div>
+                                            <input asp-for="social.Facebook" class="form-control" placeholder="facebook.com/username" />
+                                            <span asp-validation-for="social.Facebook" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-sm-3 col-sm-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fab fa-twitter"></i></div>
+                                            </div>
+                                            <input asp-for="social.Twitter" class="form-control" placeholder="twitter.com/username" />
+                                            <span asp-validation-for="social.Twitter" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-sm-3 col-sm-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fab fa-linkedin-in"></i></div>
+                                            </div>
+                                            <input asp-for="social.Linkedin" class="form-control" placeholder="linkedin.com/username" />
+                                            <span asp-validation-for="social.Linkedin" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-9">
+                                        <button type="submit" class="button">Update Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% do profileForm.socialMedia.setRendered %}
+                        </form>
+                        <form asp-action="ChangePasswordEmployer" method="post" class="dashboard-form" id="pwd-form">
+                            <div class="dashboard-section basic-info-input">
+                                <h4><i data-feather="lock"></i>Change Password</h4>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">New Password</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="CurrentPassword" class="form-control" placeholder="Current password" />
+                                        <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Retype Password</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="NewPassword" class="form-control" placeholder="New password" />
+                                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Retype Password</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Retype password" />
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-9">
+                                        <button class="button">Update Password</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="dashboard-sidebar">
+                        <div class="company-info">
+                            <div class="thumb">
+                                <img src="~/uploads/UserImages/@Model.Employer.Picture" class="img-fluid" alt="">
+                            </div>
+                            <div class="company-body">
+                                <h5>@Model.Employer.CompanyName</h5>
+                            </div>
+                        </div>
+                        <div class="dashboard-menu">
+                            <ul>
+                                <li class="active"><i class="fas fa-user"></i><a asp-action="EditEmployerProfile">Edit Profile</a></li>
+                                <li><i class="fas fa-briefcase"></i><a asp-action="MyJobs" asp-controller="Advertisement">Manage Jobs</a></li>
+                                <li><i class="fas fa-users"></i><a asp-action="Applications" asp-controller="Candidacy">Manage Candidates</a></li>
+                                <li><i class="fas fa-calendar-check"></i><a asp-action="ManagedApplications" asp-controller="Candidacy">Managed Applications</a></li>
+                                <li><i class="fas fa-plus-square"></i><a asp-action="Create" asp-controller="Advertisement">Post New Job</a></li>
+                            </ul>
+                            <ul class="delete">
+                                <li><i class="fas fa-power-off"></i><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                            </ul>
+                            <!-- Modal -->
+                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                                @*{ render(controller('App\\Controller\\ProfileController::deactivate',{'id':app.user.id})) }}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

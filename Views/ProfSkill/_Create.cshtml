@@ -1,0 +1,53 @@
+﻿@model ProfSkill
+<div class="modal fade modal-pro-skill" id="modal-pro-skill" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="title">
+                    <h4><i data-feather="feather"></i>Professional Skill</h4>
+                </div>
+                <div class="content">
+                    <form asp-action="Create" method="post">
+                        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid" />
+                        <div class="input-block-wrap">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" style="margin-right: 0; padding-top: 10px; padding-bottom: 0; color: #6f7484;font-size: 1.4rem; font-family: 'Poppins', sans-serif; font-weight: 600">
+                                    Information About Skill
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">Skill Name</div>
+                                        </div>
+                                        <input asp-for="Name" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="offset-sm-3 col-sm-9">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">Percentage</div>
+                                        </div>
+                                        <input asp-for="Percent" class="form-control" />
+                                        <span asp-validation-for="Percent" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="offset-sm-3 col-sm-9">
+                                    <div class="buttons">
+                                        <button class="primary-bg" data-save="modal" id="CREATE-SKILL">Add</button>
+                                        <button class="" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

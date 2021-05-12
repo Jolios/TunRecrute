@@ -1,0 +1,257 @@
+﻿@using Humanizer
+@addTagHelper "*, cloudscribe.Web.Pagination"
+@model Tunrecrute.ViewModels.AdvertisementsIndexViewModel
+@{
+    Layout = "~/Views/Advertisement/_Layout.cshtml";
+    ViewBag.Title = "Job ads";
+}
+<header class="page-header bg-img" style="background-image: url('@Url.Content("~/img/wallhaven-eovv3r.jpg")');">
+
+
+    <!--result login-->
+    <div class="container page-name">
+        <h1 class="text-center">Browse jobs</h1>
+        <p class="lead text-center">Use following search box to find jobs that fit you better</p>
+    </div>
+
+    <div class="container">
+        <form method="post" asp-action="Find">
+
+            <div class="row">
+
+                <div class="form-group col-xs-12 col-sm-4">
+                    <input asp-for="Title" class="form-control" placeholder="Title">
+                </div>
+                <div class="form-group col-xs-12 col-sm-4">
+                    <input asp-for="WorkAddress" class="form-control" placeholder="Location">
+                </div>
+                <div class="form-group col-xs-12 col-sm-4">
+                    <select asp-for="Field" asp-items="Model.Fields" class="form-control selectpicker"></select>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-4">
+                    <h6>Contract</h6>
+                    <div class="radio">
+                        <input type="radio" name="Contract" id="Any" value="" checked>
+                        <label for="Any">Any</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Contract" id="CDI" value="CDI">
+                        <label for="CDI">CDI</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Contract" id="CDD" value="CDD">
+                        <label for="CDD">CDD</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Contract" id="Full-Time" value="Full-Time">
+                        <label for="Full-Time">Full-Time</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Contract" id="Independent/Freelance" value="Independent/Freelance">
+                        <label for="Independent/Freelance">Independent/Freelance</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Contract" id="Internship" value="Internship">
+                        <label for="Internship">Internship</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group col-xs-12 col-sm-4">
+                    <h6>Diploma</h6>
+                    <div class="radio">
+                        <input type="radio" name="Diploma" id="AnyD" value="" checked>
+                        <label for="AnyD">Any</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Diploma" id="No Diploma" value="No Diploma">
+                        <label for="No Diploma">No Diploma</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Diploma" id="Bachelor" value="Bachelor">
+                        <label for="Bachelor">Bachelor</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Diploma" id="Ph.D." value="Ph.D.">
+                        <label for="Ph.D.">Ph.D.</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Diploma" id="Master" value="Master">
+                        <label for="Master">Master</label>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group col-xs-12 col-sm-4">
+                    <h6>Experience</h6>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="AnyE" value="" checked>
+                        <label for="AnyE">Any</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="none" value="None">
+                        <label for="none">No Experience</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="1-2" value="1-2">
+                        <label for="1-2">1-2</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="3-4" value="3-4">
+                        <label for="3-4">3-4</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="5-6" value="5-6">
+                        <label for="5-6">5-6</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="7-8" value="7-8">
+                        <label for="7-8">7-8</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="Experience" id="9+" value="9+">
+                        <label for="9+">9+</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="button-group">
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary" name="submit_search">Apply filter</button>
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+
+</header>
+
+<main>
+    <section class="no-padding-top bg-alt">
+        <div class="container">
+            <div class="row">
+                @*{% if searched is defined and searched == true and etat == true %}
+                    <div class="col-xs-12">
+                        <br>
+                        <h5>There are <strong>{ annonces.count }}</strong> results that match your search</h5>
+                    </div>
+                    {% endif %}*@
+                @foreach (Advertisement ad in Model.Ads.Data)
+                {
+                    <div class="col-xs-12">
+                        <a class="item-block" asp-action="Show" asp-route-id="@ad.Id">
+                            <header>
+                                <img src="~/uploads/UserImages/@ad.User.Picture">
+                                <div class="hgroup">
+                                    <h4>@ad.Title</h4>
+                                    <h5>
+                                        @ad.User.CompanyName
+                                        <span class="label label-success">@ad.Contract</span>
+                                        @if (ad.Field.Equals("Banking & Finance"))
+                                        {
+                                            <span class="label label-default">@ad.Field</span>
+                                        }
+                                        else if (ad.Field.Equals("Education"))
+                                        {
+                                            <span class="label label-success">@ad.Field</span>
+                                        }
+                                        else if (ad.Field.Equals("Consulting"))
+                                        {
+                                            <span class="label label-primary">@ad.Field</span>
+                                        }
+                                        else if (ad.Field.Equals("Marketing & Advertising"))
+                                        {
+                                            <span class="label label-warning">@ad.Field</span>
+                                        }
+                                        else if (ad.Field.Equals("Technology"))
+                                        {
+                                            <span class="label label-info">@ad.Field</span>
+                                        }
+                                    </h5>
+                                </div>
+                                @{
+                                    var t = ad.Posted.HasValue ? ad.Posted.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
+                                    <time datetime="@t">@ad.Posted.Value.Humanize()</time>
+                                }
+                            </header>
+
+
+                            <div class="item-body">
+                                <p>@ad.Description</p>
+                            </div>
+
+                            <footer>
+                                <ul class="details cols-3">
+                                    <li>
+                                        <i class="fa fa-map-marker"></i>
+                                        <span>@ad.WorkAddress</span>
+                                    </li>
+
+                                    <li>
+                                        <i class="fa fa-money"></i>
+                                        <span>@ad.Salary / year</span>
+                                    </li>
+
+                                    <li>
+                                        <i class="fa fa-certificate"></i>
+                                        <span>@ad.Experiance / years of experience</span>
+                                    </li>
+                                </ul>
+                            </footer>
+                        </a>
+                    </div>
+                }
+                @if (Model.Ads.Data is null)
+                {
+                    <tr>
+                        <td colspan="5">no records found</td>
+                    </tr>
+                }
+            @if (!Model.Searched)
+            {
+            <div class="navigation" style="margin: 20px auto; width: 500px;">
+               
+                
+                <cs-pager cs-paging-pagesize="@Model.Ads.PageSize"
+                            cs-paging-pagenumber="@Model.Ads.PageNumber"
+                            cs-paging-totalitems="@Model.Ads.TotalItems"
+                            cs-pagenumber-param="pageNumber"
+                            cs-previous-page-text="Previous"
+                            cs-next-page-text="Next"
+                            asp-controller="Advertisement"
+                            asp-action="Index"
+                            cs-pager-li-current-class="page-item active"
+                            cs-pager-li-other-class="page-item"
+                            cs-pager-li-non-active-class="page-item disabled"
+                            cs-pager-link-current-class="page-link"
+                            cs-pager-link-other-class="page-link">
+                </cs-pager>
+                
+            </div>
+            }
+            </div>
+        </div>
+    </section>
+</main>
+<div id="ack"></div>

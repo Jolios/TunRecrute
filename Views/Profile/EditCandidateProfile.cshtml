@@ -1,0 +1,127 @@
+﻿@model Tunrecrute.ViewModels.EditCandidateProfileViewModel
+@{
+    Layout = "~/Views/Profile/_Layout.cshtml";
+}
+<div class="alice-bg section-padding-bottom">
+    <div class="container no-gliters">
+        <div class="row no-gliters">
+            <div class="col">
+                <div class="dashboard-container">
+                    <div class="dashboard-content-wrapper">
+                        <form asp-action="EditCandidateProfile" method="Post" class="dashboard-form" enctype="multipart/form-data">
+                        <div class="dashboard-section upload-profile-photo">
+                            <div class="update-photo">
+                                <img class="image" src="~/uploads/UserImages/@Model.Candidate.Picture" alt="">
+                            </div>
+                            <div class="file-upload">
+                                <span>Change Avatar</span>
+                                <input asp-for="ImageFile" accept="image/*" class="file-input custom-file-input" />
+                            </div>
+                        </div>
+                        <div class="dashboard-section basic-info-input">
+                            <h4><i data-feather="user-check"></i>Basic Info</h4>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">First Name</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Candidate.Firstname" class="form-control" placeholder="First Name"/>
+                                    <span asp-validation-for="Candidate.Firstname" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Last Name</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Candidate.Lastname" class="form-control" placeholder="Last Name" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Email Address</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Candidate.Email" class="form-control" placeholder="email@example.com" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Phone</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Candidate.PhoneNumber" class="form-control" placeholder="12 345 678" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Candidate.Address" class="form-control" placeholder="Ariana" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"></label>
+                                <div class="col-sm-9">
+                                    <button type="submit" class="button">Save Change</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        </form>
+                        <form asp-action="ChangePasswordCandidate" method="post" class="dashboard-form" id="pwd-form">
+                            <div class="dashboard-section basic-info-input">
+                                <h4><i data-feather="lock"></i>Change Password</h4>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Current Password</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="CurrentPassword" class="form-control" placeholder="Current password" />
+                                        <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">New Password</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="NewPassword" class="form-control" placeholder="New password" />
+                                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Retype Password</label>
+                                    <div class="col-sm-9">
+                                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Retype password" />
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-9">
+                                        <button type="submit" class="button" form="pwd-form">Update Password</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="dashboard-sidebar">
+                        <div class="user-info">
+                            <div class="thumb">
+                                <img src="~/uploads/UserImages/@Model.Candidate.Picture" class="img-fluid" alt="">
+                            </div>
+                            <div class="user-body">
+                                <h5>@Model.Candidate.Firstname @Model.Candidate.Lastname</h5>
+                            </div>
+                        </div>
+                        <div class="dashboard-menu">
+                            <ul>
+                                <li class="active"><i class="fas fa-user"></i><a asp-action="EditCandidateProfile">Edit Profile</a></li>
+                                <li><i class="fas fa-file-alt"></i><a asp-action="Resume">Resume</a></li>
+                                <li><i class="fas fa-edit"></i><a asp-action="EditResume">Edit Resume</a></li>
+                                <li ><i class="fas fa-check-square"></i><a asp-action="AppliedJobs">Applied Job</a></li>
+                            </ul>
+                            <ul class="delete">
+                                <li><i class="fas fa-power-off"></i><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                            </ul>
+                            <!-- Modal -->
+                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                                @*{ render(path('deactivate',{'id':app.user.id})) }}*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

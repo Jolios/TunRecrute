@@ -1,0 +1,160 @@
+﻿@model User
+@{
+    Layout = "~/Views/Profile/_Layout.cshtml";
+    ViewBag.Title = "Resume";
+}
+<div class="alice-bg section-padding-bottom">
+    <div class="container no-gliters">
+        <div class="row no-gliters">
+            <div class="col">
+                <div class="dashboard-container">
+                    <div class="dashboard-content-wrapper">
+                        @if (!String.IsNullOrEmpty(Model.CVFilename) || !String.IsNullOrEmpty(Model.CoverLetterFilename)) {
+                        <div class="download-resume dashboard-section">
+                            @if (!String.IsNullOrEmpty(Model.CVFilename))
+                            {
+                                <a asp-action="DownloadCV">Download CV<i data-feather="download"></i></a>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.CoverLetterFilename))
+                            {
+                                <a asp-action="DownloadCL">Download Cover Letter<i data-feather="download"></i></a>
+                            }
+                        </div>
+                        }
+                        @if (Model.ProfSkills.Any() || Model.SocialMedia != null) {
+                    <div class="skill-and-profile dashboard-section">
+                        @if (Model.ProfSkills.Any())
+                        {
+                            <div class="skill">
+                                <label>Skills:</label>
+                                @foreach (ProfSkill skill in Model.ProfSkills)
+                                {
+                                    <a href="#">@skill.Name</a>
+                                }
+                            </div>
+                        }
+                        @if (Model.SocialMedia != null)
+                        {
+
+                    <div class="social-profile">
+                        <label>Social Media:</label>
+                        @if (Model.SocialMedia.Facebook != null)
+                        {
+                            <a href="@Model.SocialMedia.Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        }
+                        @if (Model.SocialMedia.Twitter != null)
+                        {
+                            <a href="@Model.SocialMedia.Twitter}" target="_blank"><i class="fab fa-twitter"></i></a>
+                        }
+                        @if (Model.SocialMedia.Google != null)
+                            {
+                                <a href="@Model.SocialMedia.Google" target="_blank"><i class="fab fa-google-plus"></i></a>
+                            } 
+                        @if (Model.SocialMedia.Linkedin != null)
+                                {
+                                    <a href="{@Model.SocialMedia.Linkedin" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                }
+                        @if (Model.SocialMedia.Pintrest != null)
+                                    {
+                                        <a href="@Model.SocialMedia.Pintrest" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                                    }
+                        @if (Model.SocialMedia.Behance != null)
+                                        {
+                                            <a href="@Model.SocialMedia.Behance" target="_blank"><i class="fab fa-behance"></i></a>
+                                        } 
+                        @if (Model.SocialMedia.Dribbble != null)
+                                            {
+                                                <a href="@Model.SocialMedia.Dribbble" target="_blank"><i class="fab fa-dribbble"></i></a>
+                                            } 
+                        @if (Model.SocialMedia.Github != null)
+                                                {
+                                                    <a href="@Model.SocialMedia.Github" target="_blank"><i class="fab fa-github"></i></a>
+                                                } 
+                    </div>
+                                            }  
+                    </div>
+                        }
+                        <div class="personal-information dashboard-section last-child details-section">
+                            <h4><i data-feather="user-plus"></i>Personal Details</h4>
+                            <ul>
+                                <li><span>Full Name:</span>@Model.Firstname @Model.Lastname</li>
+                                <li><span>Email:</span>@Model.Email</li>
+                                <li><span>Nationality:</span> @Model.Nationality </li>
+                                <li><span>Sex:</span> @Model.Sex</li>
+                                <li><span>Address:</span>@Model.Address</li>
+                            </ul>
+                        </div>
+                        <div class="about-details details-section dashboard-section">
+                            <h4><i data-feather="align-left"></i>About Me</h4>
+                            <p>@Model.AboutMe</p>
+                        </div>
+                        <div class="edication-background details-section dashboard-section">
+                            <h4><i data-feather="book"></i>Education Background</h4>
+                            @foreach (Education edu in Model.Educations) {
+                        <div class="education-label">
+                            <span class="study-year">@edu.StartYear - @edu.EndYear</span>
+                            <h5>@edu.DiplomaTitle<span>@@ @edu.InstitutionName</span></h5>
+                            <p>@edu.Description</p>
+                        </div>
+                            }
+                        </div>
+                        <div class="experience dashboard-section details-section">
+                            <h4><i data-feather="briefcase"></i>Work Experiance</h4>
+                            @foreach (var exp in Model.WorkExperiences)
+                            {
+                                <div class="experience-section">
+                                    <span class="service-year">@exp.StartYear - @exp.EndYear</span>
+                                    <h5>@exp.Title<span>@@ @exp.CompanyName</span></h5>
+                                    <p>@exp.Description</p>
+                                </div>
+                            }
+                        </div>
+                        <div class="professonal-skill dashboard-section details-section">
+                            <h4><i data-feather="feather"></i>Professional Skill</h4>
+                            <div class="progress-group">
+                                @foreach (var skill in Model.ProfSkills)
+                                {
+                                    <div class="progress-item">
+                                        <div class="progress-head">
+                                            <p class="progress-on">@skill.Name</p>
+                                        </div>
+                                        <div class="progress-body">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="@skill.Percent" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                                            </div>
+                                            <p class="progress-to">@skill.Percent%</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="experience dashboard-section details-section">
+                            <h4><i data-feather="globe"></i>Languages</h4>
+                            @foreach (var lang in Model.Languages)
+                            {
+                                <div class="experience-section lang">
+                                    <h5>@lang.LanguageName<span style="margin-left: 0px;">- @lang.ProfeciencyLevel</span></h5>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="dashboard-sidebar">
+                        <div class="user-info">
+                            <figure style="text-align: center;margin-bottom: 10px">
+                                <div style="margin-bottom: 22px">
+                                    <img src="~/uploads/UserImages/@Model.Picture" class="img-fluid" style="max-width: 65%; border-radius: 100%" alt="">
+                                </div>
+                                <figcaption>
+                                    <div class="user-body">
+                                        <h5 style="text-transform: uppercase;font-size: 24px">>@Model.Firstname @Model.Lastname</h5>
+                                    </div>
+                                </figcaption>
+
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

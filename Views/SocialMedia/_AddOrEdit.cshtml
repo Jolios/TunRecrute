@@ -1,0 +1,133 @@
+﻿@model SocialMedia
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="title">
+                    <h4><i data-feather="git-branch"></i>Social Networks</h4>
+                </div>
+                <div class="content">
+                    <form asp-action="AddOrEdit" method="post">
+                        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Social Links</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-facebook-f"></i></div>
+                                    </div>
+                                    <input asp-for="Facebook" class="form-control" placeholder="facebook.com/username" />
+                                    <span asp-validation-for="Facebook" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-twitter"></i></div>
+                                    </div>
+                                    <input asp-for="Twitter" class="form-control" placeholder="twitter.com/username" />
+                                    <span asp-validation-for="Twitter" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-google-plus"></i></div>
+                                    </div>
+                                    <input asp-for="Google" class="form-control" placeholder="google.com/username" />
+                                    <span asp-validation-for="Google" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-linkedin-in"></i></div>
+                                    </div>
+                                    <input asp-for="Linkedin" class="form-control" placeholder="linkedin.com/username" />
+                                    <span asp-validation-for="Linkedin" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-pinterest-p"></i></div>
+                                    </div>
+                                    <input asp-for="Pintrest" class="form-control" placeholder="pintrest.com/username" />
+                                    <span asp-validation-for="Pintrest" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-instagram"></i></div>
+                                    </div>
+                                    <input asp-for="Instagram" class="form-control" placeholder="instagram.com/username" />
+                                    <span asp-validation-for="Instagram" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-behance"></i></div>
+                                    </div>
+                                    <input asp-for="Behance" class="form-control" placeholder="behance.com/username" />
+                                    <span asp-validation-for="Behance" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-dribbble"></i></div>
+                                    </div>
+                                    <input asp-for="Dribbble" class="form-control" placeholder="dribbble.com/username" />
+                                    <span asp-validation-for="Dribbble" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fab fa-github"></i></div>
+                                    </div>
+                                    <input asp-for="Github" class="form-control" placeholder="github.com/username" />
+                                    <span asp-validation-for="Github" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="buttons">
+                                    <button type="submit" class="primary-bg" data-save="modal" id="SOCIAL-MEDIA">Save Update</button>
+                                    <button class="" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

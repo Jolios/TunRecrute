@@ -1,0 +1,92 @@
+﻿@using Humanizer
+@model Advertisement
+@inject SignInManager<User> siginManager
+@{
+    Layout = "~/Views/Advertisement/_Layout.cshtml";
+    ViewBag.Title = "Advertisement";
+}
+<!-- Page header -->
+<header class="page-header bg-img size-lg" style="background-image: url('@Url.Content("~/img/wallhaven-eovv3r.jpg")')">
+    <div class="container">
+        <div class="header-detail">
+
+            <img class="logo" src="~/uploads/UserImages/@Model.User.Picture" alt="">
+            <div class="hgroup">
+                <h1>@Model.Title</h1>
+                <h3><a href="">Google</a></h3>
+            </div>
+            @{
+                var t = Model.Posted.HasValue ? Model.Posted.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
+                <time datetime="@t">@Model.Posted.Value.Humanize()</time>
+            }
+            <hr>
+            <p class="lead">@Model.Description</p>
+
+            <ul class="details cols-3">
+                <li>
+                    <i class="fa fa-map-marker"></i>
+                    <span>@Model.WorkAddress</span>
+                </li>
+
+                <li>
+                    <i class="fa fa-certificate"></i>
+                    <span>@Model.Contract</span>
+                </li>
+
+                <li>
+                    <i class="fa fa-money"></i>
+                    <span>@Model.Salary Dt/ month</span>
+                </li>
+
+                <li>
+                    <i class="fa fa-clock-o"></i>
+                    <span>@Model.WorkHours+ h / week</span>
+                </li>
+
+                <li>
+                    <i class="fa fa-flask"></i>
+                    <span>@Model.Experiance years experience</span>
+                </li>
+
+
+                <li>
+                    <i class="fa fa-briefcase"></i>
+                    <span>@Model.Diploma</span>
+                </li>
+            </ul>
+            @if (siginManager.IsSignedIn(User))
+            {
+                var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
+
+                <div class="button-group">
+                @if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate"))
+                {
+                    if (Model.Candidacies == null || !Model.Candidacies.Any())
+                    {
+                        <a href="#" class="btn btn-info">Apply</a>
+                    }
+                    else
+                    {
+                        bool test = false;
+                        foreach (Candidacy c in Model.Candidacies)
+                        {
+                            if (c.User.Id == user.Id)
+                            {
+                                test = true;
+                            }
+                        }
+                        if (!test)
+                        {
+                            <a href="#" class="btn btn-info">Apply</a>
+                        }
+                    }
+                }
+                </div>
+
+            }
+
+        </div>
+    </div>
+</header>
+
+

@@ -1,0 +1,125 @@
+﻿@inject SignInManager<User> siginManager
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <!-- Styles -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
+    <link href="~/css/themify-icons.css" rel="stylesheet">
+    <link href="~/css/et-line.css" rel="stylesheet">
+    <link href="~/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="~/css/plyr.css" rel="stylesheet">
+    <link href="~/css/flag.css" rel="stylesheet">
+    <link href="~/css/slick.css" rel="stylesheet">
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/css/jquery.nstSlider.min.css" rel="stylesheet">
+    <link href="~/css/noty.css" rel="stylesheet">
+    <link href="~/css/main.css" rel="stylesheet">
+    <link href="~/css/dashboard.css" rel="stylesheet">
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/feather.min.js"></script>
+    <script src="~/js/bootstrap-select.min.js"></script>
+    <script src="~/js/jquery.nstSlider.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/visible.js"></script>
+    <script src="~/js/jquery.countTo.js"></script>
+    <script src="~/js/chart.js"></script>
+    <script src="~/js/plyr.js"></script>
+    <script src="~/js/tinymce.min.js"></script>
+    <script src="~/js/slick.min.js"></script>
+    <script src="~/js/jquery.ajaxchimp.min.js"></script>
+    <script src="~/js/profile.custom.js"></script>
+    <script src="~/js/dashboard.js"></script>
+    <script src="~/js/datePicker.js"></script>
+    <script src="~/js/upload-input.js"></script>
+    <script src="~/js/noty.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600%7CRoboto:300i,400,500" rel="stylesheet">
+
+    <link rel="icon" href="~/img/speaker.ico">
+
+
+
+</head>
+<body>
+    <header class="header-2">
+        <div class="container" style="margin-top: -9px;">
+            <div class="row">
+                <div class="col">
+                    <div class="header-top">
+                        <div class="logo-area" style="height: 78px;padding-top: 15px;">
+                            <a class="logo" asp-controller="Advertisement" asp-action="Index"><img src="~/img/speaker.png" alt="logo"></a>
+                        </div>
+                        <div class="header-top-toggler">
+                            <div class="header-top-toggler-button"></div>
+                        </div>
+                        <div class="top-nav">
+                            @if (siginManager.IsSignedIn(User))
+                            {
+                                var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
+                                if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+                                {
+                                    <div class="dropdown header-top-account">
+                                        <a asp-controller="Advertisement" asp-action="Index" class="account-button" style="font-weight: 500;font-size: 14px;letter-spacing: 1px;line-height: 60px;padding-left: 7px;padding-top: 10px;">
+                                            Browse Jobs
+                                        </a>
+                                    </div>
+                                    <div class="dropdown header-top-account">
+                                        <a href="#" class="account-button" style="font-weight: 500;font-size: 14px;letter-spacing: 1px;line-height: 60px;padding-left: 7px;padding-top: 10px;">
+                                            My Jobs
+                                        </a>
+                                    </div>
+                                    <div class="dropdown header-top-account" style="margin-bottom: 0;padding: 0px;">
+                                        <a asp-controller="Advertisement" asp-action="Create" class="account-button" style="font-weight: 500;font-size: 14px;letter-spacing: 1px;line-height: 60px;padding-right: 320px;padding-left: 7px;padding-top: 10px;">
+                                            Post a Job
+                                        </a>
+                                    </div>
+                                }
+                                else if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate"))
+                                {
+                                    <div class="dropdown header-top-account">
+                                        <a asp-controller="Advertisement" asp-action="Index" class="account-button" style="font-weight: 500;font-size: 14px;letter-spacing: 1px;line-height: 60px;padding-left: 7px;padding-top: 10px;">
+                                            Browse Jobs
+                                        </a>
+                                    </div>
+                                    <div class="dropdown header-top-account" style="margin-bottom: 0;padding: 0px;">
+                                        <a href="#" class="account-button" style="font-weight: 500;font-size: 14px;letter-spacing: 1px;line-height: 60px;padding-right: 400px;padding-left: 7px;padding-top: 10px;">
+                                            My Applications
+                                        </a>
+                                    </div>
+                                }
+                                <a href="#" style="padding-top: 11px">
+                                    <img src="~/uploads/UserImages/@user.Picture" alt="avatar" style="width: 50px;height: 50px;border-radius: 100%;">
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    @*{% for message in app.flashes('success') %}
+        <script>
+                new Noty({
+                    theme: 'metroui',
+                    timeout: 1500,
+                    killer: true,
+                    type: 'success',
+                    layout: 'topCenter',
+                    text: '{ message }}'
+                }).show();
+        </script>
+        {% endfor %}*@
+    @RenderBody()
+
+    <script src="~/js/site.js"></script>
+
+</body>
+</html>

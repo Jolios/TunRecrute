@@ -1,0 +1,122 @@
+﻿@inject SignInManager<User> siginManager
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <!-- Styles -->
+    <link href="~/css/app.min.css" rel="stylesheet">
+    <link href="~/css/thejobs.css" rel="stylesheet">
+    <link href="~/css/custom.css" rel="stylesheet">
+    <link href="~/css/noty.css" rel="stylesheet">
+    <link rel="icon" href="~/img/speaker.ico">
+    <script src="~/js/app.min.js"></script>
+    <script src="~/js/thejobs.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/jquery1_8_2.js"></script>
+    <script src="~/js/noty.js"></script>
+    <script src="~/js/myscript.js"></script>
+
+
+
+</head>
+<body class="nav-on-header smart-nav bg-alt">
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <div class="container">
+
+            <!-- Logo -->
+            <div class="pull-left">
+                <a class="navbar-toggle" href="#" data-toggle="offcanvas"><i class="ti-menu"></i></a>
+
+                <div class="logo-wrapper">
+                    <a class="logo" asp-controller="Advertisement" asp-action="Index"><img src="~/img/speaker.png" alt="logo"></a>
+                    <a class="logo-alt" asp-controller="Advertisement" asp-action="Index"><img src="~/img/speaker.png" alt="logo-alt"></a>
+                </div>
+
+            </div>
+            <!-- END Logo -->
+            <!-- User account -->
+            @if (siginManager.IsSignedIn(User))
+            {
+                var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
+                <div class="pull-right">
+                    <div class="dropdown user-account">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            @if (!String.IsNullOrEmpty(user.Picture))
+                            {
+                                <img src="~/uploads/UserImages/@user.Picture" alt="avatar">
+                            }
+                            else
+                            {
+                                <img src="~/img/profile.png" alt="avatar">
+                            }
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            @if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+                            {
+                                <li><a asp-controller="Profile" asp-action="EditEmployerProfile">Edit Profile</a></li>
+                            }
+                            else
+                            {
+                                <li><a asp-controller="Profile" asp-action="EditCandidateProfile">Edit Profile</a></li>
+                            }
+                            <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="pull-right user-login">
+                    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Login">Login</a> or <a asp-controller="Account" asp-action="ChooseRole">register</a>
+                </div>
+            }
+            <!-- Navigation menu -->
+        <ul class="nav-menu">
+
+
+            <a asp-controller="Advertisement" asp-action="Index">Browse jobs</a>
+            @if (siginManager.IsSignedIn(User))
+            {
+                var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
+                if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+                {
+                    <a href="#">My jobs</a>
+                    <a asp-controller="Advertisement" asp-action="Create">Post a job</a>
+                } else if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate")) {
+                    <a href="#">My Applications</a>
+                }
+            }
+        </ul>
+            <!-- END Navigation menu -->
+
+        </div>
+    </nav>
+    <!-- END Navigation bar -->
+    @RenderBody()
+    @*<script>
+                new Noty({
+                    theme: 'metroui',
+                    timeout: 1500,
+                    killer: true,
+                    type: 'success',
+                    layout: 'topCenter',
+                    text: '{ message }'
+                }).show();
+        </script>*@
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/601e541fc31c9117cb76657a/1etr7h7r3';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>

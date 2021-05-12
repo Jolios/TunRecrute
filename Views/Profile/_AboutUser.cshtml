@@ -1,0 +1,32 @@
+﻿@model Tunrecrute.ViewModels.AboutUserViewModel
+<div class="modal fade" id="modal-about-me" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="title">
+                    <h4><i data-feather="align-left"></i>About Me</h4>
+                </div>
+                <div class="content">
+                    <form asp-action="AboutUser" method="post">
+                        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Write about Yourself</label>
+                            <div class="col-sm-9">
+                                <textarea asp-for="AboutMe" class="form-control" placeholder="Write about yourself"></textarea>
+                                <span asp-validation-for="AboutMe" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-sm-3 col-sm-9">
+                                <div class="buttons">
+                                    <button class="primary-bg" data-save="modal" id="ABOUT-USER">Save Update</button>
+                                    <button class="" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
