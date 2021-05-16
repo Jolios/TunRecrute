@@ -53,7 +53,14 @@
                             }
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="#">Edit Profile</a></li>
+                            @if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+                            {
+                                <li><a asp-controller="Profile" asp-action="EditEmployerProfile">Edit Profile</a></li>
+                            }
+                            else if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate"))
+                            {
+                                <li><a asp-controller="Profile" asp-action="EditCandidateProfile">Edit Profile</a></li>
+                            }
                             <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
                         </ul>
                     </div>
