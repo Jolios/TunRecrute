@@ -31,11 +31,15 @@
                                                 <span class="job-type part-time"><a href="#"><i data-feather="file"></i>@c.Advertisement.Contract</a></span>
                                                 @if (String.IsNullOrEmpty(c.Status))
                                                 {<span class="status"><i data-feather="clock"></i> Application Pending</span>}
-                                                @if (c.Status.Equals("shortlisted"))
-                                                {<span class="status" style="color: #01d13d;"><i data-feather="check-circle" style="color: #01d13d;"></i> Shortlisted! Check your email!</span>}
-                                                @if (c.Status.Equals("rejected"))
-                                                {<span class="status" style="color: #ff3366;"><i data-feather="x-circle" style="color: #ff3366;"></i>Rejected :( </span>}
-                                                </div>
+                                                else
+                                                {
+                                                    if (c.Status.Equals("shortlisted"))
+                                                    {<span class="status" style="color: #01d13d;"><i data-feather="check-circle" style="color: #01d13d;"></i> Shortlisted! Check your email!</span>}
+                                                    @if (c.Status.Equals("rejected"))
+                                                    {<span class="status" style="color: #ff3366;"><i data-feather="x-circle" style="color: #ff3366;"></i>Rejected :( </span>}
+                                                }
+                                            </div>
+
                                         </div>
                                         <div class="more">
                                             <form>
