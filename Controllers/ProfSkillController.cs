@@ -44,7 +44,6 @@ namespace Tunrecrute.Controllers
                 entity.Percent= model.Percent;
                 db.Update<ProfSkill>(entity);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume", "Profile");
             }
             return PartialView("_Edit", model);
         }
@@ -68,7 +67,6 @@ namespace Tunrecrute.Controllers
                 model.UserId = currentUser.Id;
                 await db.AddAsync<ProfSkill>(model);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume", "Profile");
             }
             return PartialView("_Create", model);
         }

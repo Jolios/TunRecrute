@@ -82,7 +82,7 @@
                 var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
                 if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
                 {
-                    <a asp-controller="Advertisement"asp-action="MyJobs">My jobs</a>
+                    <a asp-controller="Advertisement" asp-action="MyJobs">My jobs</a>
                     <a asp-controller="Advertisement" asp-action="Create">Post a job</a>
                 } else if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate")) {
                     <a asp-controller="Profile"asp-action="AppliedJobs">My Applications</a>

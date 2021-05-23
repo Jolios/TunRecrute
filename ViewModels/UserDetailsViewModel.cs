@@ -22,8 +22,9 @@ namespace Tunrecrute.ViewModels
         public string Address { get; set; }
         [StringLength(10)]
         public string Sex { get; set; }
-        [StringLength(255)]
-        public string Birthdate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? Birthdate { get; set; }
         [StringLength(255)]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Nationality { get; set; }

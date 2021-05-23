@@ -69,7 +69,6 @@ namespace Tunrecrute.Controllers
                 }
                 await db.SaveChangesAsync();
 
-                return RedirectToAction("EditResume","Profile");
             }
             return PartialView("_AddOrEdit", model);
         }

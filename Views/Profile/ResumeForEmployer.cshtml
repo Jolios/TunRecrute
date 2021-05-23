@@ -79,8 +79,18 @@
                             <ul>
                                 <li><span>Full Name:</span>@Model.Firstname @Model.Lastname</li>
                                 <li><span>Email:</span>@Model.Email</li>
-                                <li><span>Nationality:</span> @Model.Nationality </li>
-                                <li><span>Sex:</span> @Model.Sex</li>
+                                @if (Model.Birthdate != null)
+                                {
+                                    <li><span>Date of Birth:</span> @Model.Birthdate?.ToString("dd/MM/yyyy")</li>
+                                }
+                                @if (!String.IsNullOrEmpty(Model.Nationality))
+                                {
+                                    <li><span>Nationality:</span> @Model.Nationality </li>
+                                }
+                                @if (!String.IsNullOrEmpty(Model.Sex))
+                                {
+                                    <li><span>Sex:</span> @Model.Sex</li>
+                                }
                                 <li><span>Address:</span>@Model.Address</li>
                             </ul>
                         </div>

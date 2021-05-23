@@ -47,7 +47,6 @@ namespace Tunrecrute.Controllers
                 entity.Description = model.Description;
                 db.Update<Education>(entity);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume", "Profile");
             }
             return PartialView("_Edit", model);
         }
@@ -71,7 +70,6 @@ namespace Tunrecrute.Controllers
                 model.UserId = currentUser.Id;
                 await db.AddAsync<Education>(model);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume", "Profile");
             }
             return PartialView("_Create", model);
         }

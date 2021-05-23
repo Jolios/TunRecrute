@@ -35,8 +35,9 @@ namespace Tunrecrute.Models
         public string AboutMe { get; set; }
         [StringLength(10)]
         public string Sex { get; set; }
-        [StringLength(255)]
-        public string Birthdate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? Birthdate { get; set; }
         [StringLength(255)]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Use letters only please")]
         public string Nationality { get; set; }

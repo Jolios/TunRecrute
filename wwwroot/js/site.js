@@ -20,8 +20,6 @@
         var dataToSend = form.serialize();
 
         $.post(actionUrl, dataToSend).done(function (data) {
-            console.log("in");
-            console.log(placeholderElement.html());
             var newBody = $('.modal-body', data);
             placeholderElement.find('.modal-body').replaceWith(newBody);
 
@@ -29,8 +27,8 @@
             // if it's valid then hide modal window
             var isValid = newBody.find('[name="IsValid"]').val() == 'True';
             if (isValid) {
-                placeholderElement.find('.modal').modal('hide');
-                window.location.reload();
+                console.log("valid");
+                location.reload();
             }
         });
     });

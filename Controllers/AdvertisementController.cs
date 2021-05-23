@@ -40,7 +40,6 @@ namespace Tunrecrute.Controllers
             model.Ads.PageSize = pageSize;
             return View(model);
         }
-        [HttpPost]
         public async Task<IActionResult> Find(AdvertisementsIndexViewModel model)
         {
             model.Title??= "";
@@ -48,6 +47,7 @@ namespace Tunrecrute.Controllers
             model.WorkAddress??= "";
             model.Contract??= "";
             model.Experience??= "";
+            model.Field ??= "";
             model.Searched = true;
             var query = db.Advertisements.Where(x => x.Title.Contains(model.Title)
             && x.Field.Contains(model.Field)

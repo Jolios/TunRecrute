@@ -315,7 +315,6 @@ namespace Tunrecrute.Controllers
                 currentUser.AboutMe = model.AboutMe;
                 db.Update<User>(currentUser);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume");
             }
             return PartialView("_AboutUser", model);
         }
@@ -365,7 +364,6 @@ namespace Tunrecrute.Controllers
                 currentUser.Address = model.Address;
                 db.Update<User>(currentUser);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume");
             }
             return PartialView("_UserDetails", model);
         }

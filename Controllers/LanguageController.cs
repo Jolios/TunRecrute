@@ -62,7 +62,6 @@ namespace Tunrecrute.Controllers
                 entity.ProfeciencyLevel = model.language.ProfeciencyLevel;
                 db.Update<Language>(entity);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume", "Profile");
             }
             return PartialView("_Edit", model);
         }
@@ -99,7 +98,6 @@ namespace Tunrecrute.Controllers
                 entity.LanguageName = model.language.LanguageName;
                 await db.AddAsync<Language>(entity);
                 await db.SaveChangesAsync();
-                return RedirectToAction("EditResume", "Profile");
             }
             return PartialView("_Create", model);
         }

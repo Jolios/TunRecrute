@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Tunrecrute.Models;
+using Tunrecrute.ViewModels;
 using TunRecrute.Data;
 
 namespace Tunrecrute.Controllers
@@ -31,6 +32,20 @@ namespace Tunrecrute.Controllers
             return View(ads);
         }
 
+        [HttpPost]
+        public  IActionResult Find(string title,string address)
+        {
+            if(String.IsNullOrEmpty(title) && String.IsNullOrEmpty(address))
+            {
+                return RedirectToAction("Index");
+            }
+            AdvertisementsIndexViewModel model = new AdvertisementsIndexViewModel
+            {
+                Title = title,
+                WorkAddress = address
+            };
+            return RedirectToAction("Find","Advertisement",model);
+        }
         public IActionResult Privacy()
         {
             return View();

@@ -81,13 +81,18 @@
                             <ul>
                                 <li><span>Full Name:</span>@Model.Candidate.Firstname @Model.Candidate.Lastname</li>
                                 <li><span>Email:</span>@Model.Candidate.Email</li>
-                                <li><span>Date of Birth:</span> @if (!String.IsNullOrEmpty(Model.Candidate.Birthdate))
+                                @if (Model.Candidate.Birthdate != null)
                                 {
-                                    DateTime.ParseExact(Model.Candidate.Birthdate, "yyyy-MM-dd HH:mm:ss", null).ToString("dd/MM/yyyy");
+                                    <li><span>Date of Birth:</span> @Model.Candidate.Birthdate?.ToString("dd/MM/yyyy")</li>
                                 }
-                                </li>
-                                <li><span>Nationality:</span> @Model.Candidate.Nationality </li>
-                                <li><span>Sex:</span> @Model.Candidate.Sex</li>
+                                @if (!String.IsNullOrEmpty(Model.Candidate.Nationality))
+                                {
+                                    <li><span>Nationality:</span> @Model.Candidate.Nationality </li>
+                                }                                
+                                @if (!String.IsNullOrEmpty(Model.Candidate.Sex))
+                                {
+                                    <li><span>Sex:</span> @Model.Candidate.Sex</li>
+                                }
                                 <li><span>Address:</span>@Model.Candidate.Address</li>
                             </ul>
                             <!-- Button trigger modal -->
@@ -245,7 +250,7 @@
                             </ul>
                             <ul class="delete">
                                 <li><i class="fas fa-power-off"></i><a asp-controller="Account" asp-action="Logout">Logout</a></li>
-                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                                @*<li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>*@
                             </ul>
                             <!-- Modal -->
                             <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
