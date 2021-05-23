@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace Tunrecrute.Controllers
     {
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
+        private readonly IToastNotification toastNotification;
 
-        public CandidacyController(TunrecruteContext db, SignInManager<User> signInManager)
+        public CandidacyController(TunrecruteContext db, SignInManager<User> signInManager, IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
+            this.toastNotification = toastNotification;
         }
 
         [Authorize(Roles ="Employer")]
@@ -90,6 +93,12 @@ namespace Tunrecrute.Controllers
             cd.IsDeleted = 0;
             db.Candidacies.Add(cd);
             await db.SaveChangesAsync();
+            toastNotification.AddSuccessToastMessage("Your application has been sent !", new NotyOptions
+            {
+                Theme = "metroui",
+                Timeout = 1500,
+                Layout = "topCenter"
+            });
             return RedirectToAction("Show","Advertisement",new { id = ad.Id });
         }
 

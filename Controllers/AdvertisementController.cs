@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,13 @@ namespace Tunrecrute.Controllers
     {
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
+        private readonly IToastNotification toastNotification;
 
-        public AdvertisementController(TunrecruteContext db,SignInManager<User> signInManager)
+        public AdvertisementController(TunrecruteContext db,SignInManager<User> signInManager,IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
+            this.toastNotification = toastNotification;
         }
         public async Task<IActionResult> Index(int pageNumber = 1,int pageSize = 10)
         {
@@ -111,6 +114,12 @@ namespace Tunrecrute.Controllers
                 ad.Posted = DateTime.Now;
                 db.Add<Advertisement>(ad);
                 db.SaveChanges();
+                toastNotification.AddSuccessToastMessage("Job Created!", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
                 return RedirectToAction("Show",new { id = ad.Id });
             }
             return View(ad);
@@ -187,6 +196,12 @@ namespace Tunrecrute.Controllers
             {
                 db.Update(ad);
                 db.SaveChanges();
+                toastNotification.AddSuccessToastMessage("Job Updated !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
                 return RedirectToAction("Show", ad.Id);
             }
             return View(ad);
@@ -206,6 +221,12 @@ namespace Tunrecrute.Controllers
             if (!ad.UserId.Equals(user.Id)) return RedirectToAction("Index");
             db.Advertisements.Remove(ad);
             await db.SaveChangesAsync();
+            toastNotification.AddSuccessToastMessage("Job Deleted", new NotyOptions
+            {
+                Theme = "metroui",
+                Timeout = 1500,
+                Layout = "topCenter"
+            });
             return RedirectToAction(nameof(Index));
         }
         

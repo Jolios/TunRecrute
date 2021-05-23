@@ -41,6 +41,7 @@ namespace Tunrecrute
                 .AddEntityFrameworkStores<TunrecruteContext>();
             services.AddControllersWithViews();
             services.AddCloudscribePagination();
+            services.AddMvc().AddNToastNotifyNoty();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +66,7 @@ namespace Tunrecrute
 
             app.UseAuthorization();
 
-
+            app.UseNToastNotify();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace Tunrecrute.Controllers
     {
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
+        private readonly IToastNotification toastNotification;
 
-        public EducationController(TunrecruteContext db, SignInManager<User> signInManager)
+        public EducationController(TunrecruteContext db, SignInManager<User> signInManager,IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
+            this.toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -47,6 +50,13 @@ namespace Tunrecrute.Controllers
                 entity.Description = model.Description;
                 db.Update<Education>(entity);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Education experience info edited !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
+
             }
             return PartialView("_Edit", model);
         }
@@ -70,6 +80,12 @@ namespace Tunrecrute.Controllers
                 model.UserId = currentUser.Id;
                 await db.AddAsync<Education>(model);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Education experience added !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return PartialView("_Create", model);
         }
@@ -90,6 +106,12 @@ namespace Tunrecrute.Controllers
             if (education == null) return NotFound();
             db.Remove<Education>(education);
             await db.SaveChangesAsync();
+            toastNotification.AddSuccessToastMessage("Education experience deleted !", new NotyOptions
+            {
+                Theme = "metroui",
+                Timeout = 1500,
+                Layout = "topCenter"
+            });
             return RedirectToAction("EditResume", "Profile");
         }
     }

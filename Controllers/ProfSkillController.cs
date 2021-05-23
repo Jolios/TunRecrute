@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace Tunrecrute.Controllers
     {
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
+        private readonly IToastNotification toastNotification;
 
-        public ProfSkillController(TunrecruteContext db, SignInManager<User> signInManager)
+        public ProfSkillController(TunrecruteContext db, SignInManager<User> signInManager,IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
+            this.toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -44,6 +47,12 @@ namespace Tunrecrute.Controllers
                 entity.Percent= model.Percent;
                 db.Update<ProfSkill>(entity);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Professional Skill Updated !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return PartialView("_Edit", model);
         }
@@ -67,6 +76,12 @@ namespace Tunrecrute.Controllers
                 model.UserId = currentUser.Id;
                 await db.AddAsync<ProfSkill>(model);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Professional Skill Added !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return PartialView("_Create", model);
         }
@@ -87,6 +102,12 @@ namespace Tunrecrute.Controllers
             if (education == null) return NotFound();
             db.Remove<ProfSkill>(education);
             await db.SaveChangesAsync();
+            toastNotification.AddSuccessToastMessage("Professional Skill Deleted !", new NotyOptions
+            {
+                Theme = "metroui",
+                Timeout = 1500,
+                Layout = "topCenter"
+            });
             return RedirectToAction("EditResume", "Profile");
         }
     }

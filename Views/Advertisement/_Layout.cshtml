@@ -40,55 +40,49 @@
             @if (siginManager.IsSignedIn(User))
             {
                 var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
-                <div class="pull-right">
-                    <div class="dropdown user-account">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                            @if (!String.IsNullOrEmpty(user.Picture))
-                            {
-                                <img src="~/uploads/UserImages/@user.Picture" alt="avatar">
-                            }
-                            else
-                            {
-                                <img src="~/img/profile.png" alt="avatar">
-                            }
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            @if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
-                            {
-                                <li><a asp-controller="Profile" asp-action="EditEmployerProfile">Edit Profile</a></li>
-                            }
-                            else
-                            {
-                                <li><a asp-controller="Profile" asp-action="EditCandidateProfile">Edit Profile</a></li>
-                            }
-                            <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            }
+<div class="pull-right">
+    <div class="dropdown user-account">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+            @if (!String.IsNullOrEmpty(user.Picture))
+            {
+<img src="~/uploads/UserImages/@user.Picture" alt="avatar"> }
+                else
+                {
+<img src="~/img/profile.png" alt="avatar">}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+            @if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+            {
+<li><a asp-controller="Profile" asp-action="EditEmployerProfile">Edit Profile</a></li> }
+                else
+                {
+<li><a asp-controller="Profile" asp-action="EditCandidateProfile">Edit Profile</a></li>}
+            <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+        </ul>
+    </div>
+</div> }
             else
             {
-                <div class="pull-right user-login">
-                    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Login">Login</a> or <a asp-controller="Account" asp-action="ChooseRole">register</a>
-                </div>
-            }
+<div class="pull-right user-login">
+    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Login">Login</a> or <a asp-controller="Account" asp-action="ChooseRole">register</a>
+</div>            }
             <!-- Navigation menu -->
-        <ul class="nav-menu">
+            <ul class="nav-menu">
 
 
-            <a asp-controller="Advertisement" asp-action="Index">Browse jobs</a>
-            @if (siginManager.IsSignedIn(User))
-            {
-                var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
-                if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+                <a asp-controller="Advertisement" asp-action="Index">Browse jobs</a>
+                @if (siginManager.IsSignedIn(User))
                 {
-                    <a asp-controller="Advertisement" asp-action="MyJobs">My jobs</a>
-                    <a asp-controller="Advertisement" asp-action="Create">Post a job</a>
-                } else if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate")) {
-                    <a asp-controller="Profile"asp-action="AppliedJobs">My Applications</a>
-                }
-            }
-        </ul>
+                    var user = siginManager.UserManager.FindByNameAsync(siginManager.UserManager.GetUserName(User)).Result;
+                    if (await siginManager.UserManager.IsInRoleAsync(user, "Employer"))
+                    {
+    <a asp-controller="Advertisement" asp-action="MyJobs">My jobs</a>
+                        <a asp-controller="Advertisement" asp-action="Create">Post a job</a> }
+                                        else if (await siginManager.UserManager.IsInRoleAsync(user, "Candidate"))
+                                        {
+                        <a asp-controller="Profile" asp-action="AppliedJobs">My Applications</a>                }
+                                    }
+            </ul>
             <!-- END Navigation menu -->
 
         </div>
@@ -118,5 +112,7 @@
         })();
     </script>
     <!--End of Tawk.to Script-->
+    @await Component.InvokeAsync("NToastNotify")
+
 </body>
 </html>

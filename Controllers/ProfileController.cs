@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,12 +40,14 @@ namespace Tunrecrute.Controllers
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
         private readonly IWebHostEnvironment hostEnvironment;
+        private readonly IToastNotification toastNotification;
 
-        public ProfileController(TunrecruteContext db,SignInManager<User> signInManager,IWebHostEnvironment hostEnvironment)
+        public ProfileController(TunrecruteContext db,SignInManager<User> signInManager,IWebHostEnvironment hostEnvironment,IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
             this.hostEnvironment = hostEnvironment;
+            this.toastNotification = toastNotification;
         }
         [HttpGet]
         [Authorize(Roles = "Candidate")]
@@ -106,6 +109,12 @@ namespace Tunrecrute.Controllers
                     user.PhoneNumber = model.Candidate.PhoneNumber;
                     db.Update<User>(user);
                     await db.SaveChangesAsync();
+                    toastNotification.AddSuccessToastMessage("User Updated !", new NotyOptions
+                    {
+                        Theme = "metroui",
+                        Timeout = 1500,
+                        Layout = "topCenter"
+                    });
                     return RedirectToAction("EditCandidateProfile");
                 }
                 catch (Exception  ex )
@@ -119,11 +128,58 @@ namespace Tunrecrute.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Employer")]
-        public async Task<IActionResult> EditEmployerProfile(EditCandidateProfileViewModel model)
+        public async Task<IActionResult> EditEmployerProfile(EditEmployerViewModel model)
         {
             var currentUser = this.User;
             var user = await signInManager.UserManager.GetUserAsync(currentUser);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (model.ImageFile == null) model.Employer.Picture = user.Picture;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (model.ImageFile != null)
+                    {
+                        string imageFileName = new string(Path.GetFileNameWithoutExtension(model.ImageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+                        string newFileName = imageFileName + '-' + Guid.NewGuid().ToString() + '.' + Path.GetExtension(model.ImageFile.FileName);
+                        string destination = Path.Combine(hostEnvironment.WebRootPath, "uploads/UserImages");
+                        destination = Path.Combine(destination, newFileName);
+                        using (var fileStream = new FileStream(destination, FileMode.Create))
+                        {
+                            model.ImageFile.CopyTo(fileStream);
+                        }
+                        user.Picture = newFileName;
+                    }
+                    user.CompanyName = model.Employer.CompanyName;
+                    user.Email = model.Employer.Email;
+                    user.PhoneNumber = model.Employer.PhoneNumber;
+                    user.AboutMe = model.Employer.AboutMe;
+                    user.SocialMedia = new SocialMedia
+                    {
+                        Facebook = model.social.Facebook,
+                        Youtube = model.social.Youtube,
+                        Linkedin = model.social.Linkedin,
+                        Twitter = model.social.Twitter
+                    };
+                    db.Update<User>(user);
+                    await db.SaveChangesAsync();
+                    toastNotification.AddSuccessToastMessage("User Updated !", new NotyOptions
+                    {
+                        Theme = "metroui",
+                        Timeout = 1500,
+                        Layout = "topCenter"
+                    });
+                    return RedirectToAction("EditCandidateProfile");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
 
+                }
+            }
             return View(model);
         }
 
@@ -149,6 +205,12 @@ namespace Tunrecrute.Controllers
                     return View("EditCandidateProfile");
                 }
                 await signInManager.RefreshSignInAsync(user);
+                toastNotification.AddSuccessToastMessage("Password Updated !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
                 return RedirectToAction("EditCandidateProfile");
                
                
@@ -177,6 +239,12 @@ namespace Tunrecrute.Controllers
                     return View("EditEmployerProfile");
                 }
                 await signInManager.RefreshSignInAsync(user);
+                toastNotification.AddSuccessToastMessage("Password Updated !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
                 return RedirectToAction("EditEmployerProfile");
 
 
@@ -261,6 +329,12 @@ namespace Tunrecrute.Controllers
                             model.CVFile.CopyTo(fileStream);
                         }
                         candidate.CVFilename = newFileName;
+                        toastNotification.AddSuccessToastMessage("CV Uploaded !", new NotyOptions
+                        {
+                            Theme = "metroui",
+                            Timeout = 1500,
+                            Layout = "topCenter"
+                        });
                     }
                     if (model.CoverLetterFile != null)
                     {
@@ -273,6 +347,13 @@ namespace Tunrecrute.Controllers
                             model.CoverLetterFile.CopyTo(fileStream);
                         }
                         candidate.CoverLetterFilename = newFileName;
+                        toastNotification.AddSuccessToastMessage("Cover Letter Uploaded !", new NotyOptions
+                        {
+                            Theme = "metroui",
+                            Timeout = 1500,
+                            Layout = "topCenter"
+                        });
+
                     }
                     db.Update<User>(candidate);
                     await db.SaveChangesAsync();
@@ -364,6 +445,12 @@ namespace Tunrecrute.Controllers
                 currentUser.Address = model.Address;
                 db.Update<User>(currentUser);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Personal Details Edited !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return PartialView("_UserDetails", model);
         }

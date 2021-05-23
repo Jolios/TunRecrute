@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace Tunrecrute.Controllers
     {
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
+        private readonly IToastNotification toastNotification;
 
-        public SocialMediaController(TunrecruteContext db, SignInManager<User> signInManager)
+        public SocialMediaController(TunrecruteContext db, SignInManager<User> signInManager,IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
+            this.toastNotification = toastNotification;
         }
         [HttpGet]
         [Authorize]
@@ -62,10 +65,22 @@ namespace Tunrecrute.Controllers
                 if (update)
                 {
                     db.Update<SocialMedia>(entity);
+                    toastNotification.AddSuccessToastMessage("Social Media Link Updated !", new NotyOptions
+                    {
+                        Theme = "metroui",
+                        Timeout = 1500,
+                        Layout = "topCenter"
+                    });
                 }
                 else
                 {
                     await db.AddAsync<SocialMedia>(entity);
+                    toastNotification.AddSuccessToastMessage("Social Media Link Added !", new NotyOptions
+                    {
+                        Theme = "metroui",
+                        Timeout = 1500,
+                        Layout = "topCenter"
+                    });
                 }
                 await db.SaveChangesAsync();
 

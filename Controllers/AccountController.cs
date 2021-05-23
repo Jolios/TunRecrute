@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,14 @@ namespace Tunrecrute.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IToastNotification toastNotification;
 
-        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager,RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager,RoleManager<IdentityRole> roleManager, IToastNotification toastNotification)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            this.toastNotification = toastNotification;
         }
         public IActionResult ChooseRole()
         {
@@ -142,10 +145,22 @@ namespace Tunrecrute.Controllers
 
                 if (result.Succeeded)
                 {
+                    toastNotification.AddSuccessToastMessage("Login Successful", new NotyOptions
+                    {
+                        Theme = "metroui",
+                        Timeout = 1500,
+                        Layout = "topCenter"
+                    });
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
-                    else return RedirectToAction("Index", "Home");
+                    else return RedirectToAction("Index", "Advertisement");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                toastNotification.AddErrorToastMessage("Email/Password incorrect", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return View(model);
         }

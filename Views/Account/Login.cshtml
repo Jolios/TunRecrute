@@ -133,7 +133,7 @@
                     <div class="input-location">
                         <input asp-for="Password" placeholder="Password" class="form-control">
                     </div>
-                    
+
                     <div class="btn-search">
                         <button class="btn btn-lg btn-primary" type="submit">
                             Sign in
@@ -145,6 +145,6 @@
         </div>
     </header>
     <!-- END Site header -->
-
+    @await Component.InvokeAsync("NToastNotify")
 </body>
 </html>

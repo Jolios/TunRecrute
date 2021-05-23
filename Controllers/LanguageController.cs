@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,13 @@ namespace Tunrecrute.Controllers
     {
         private readonly TunrecruteContext db;
         private readonly SignInManager<User> signInManager;
+        private readonly IToastNotification toastNotification;
 
-        public LanguageController(TunrecruteContext db, SignInManager<User> signInManager)
+        public LanguageController(TunrecruteContext db, SignInManager<User> signInManager,IToastNotification toastNotification)
         {
             this.db = db;
             this.signInManager = signInManager;
+            this.toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -62,6 +65,12 @@ namespace Tunrecrute.Controllers
                 entity.ProfeciencyLevel = model.language.ProfeciencyLevel;
                 db.Update<Language>(entity);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Language Edited !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return PartialView("_Edit", model);
         }
@@ -98,6 +107,12 @@ namespace Tunrecrute.Controllers
                 entity.LanguageName = model.language.LanguageName;
                 await db.AddAsync<Language>(entity);
                 await db.SaveChangesAsync();
+                toastNotification.AddSuccessToastMessage("Language Added !", new NotyOptions
+                {
+                    Theme = "metroui",
+                    Timeout = 1500,
+                    Layout = "topCenter"
+                });
             }
             return PartialView("_Create", model);
         }
@@ -118,6 +133,12 @@ namespace Tunrecrute.Controllers
             if (language == null) return NotFound();
             db.Remove<Language>(language);
             await db.SaveChangesAsync();
+            toastNotification.AddSuccessToastMessage("Language Deleted !", new NotyOptions
+            {
+                Theme = "metroui",
+                Timeout = 1500,
+                Layout = "topCenter"
+            });
             return RedirectToAction("EditResume", "Profile");
         }
     }
