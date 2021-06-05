@@ -55,7 +55,7 @@ namespace Tunrecrute.Controllers
             var secondQuery = query.SelectMany(a => a.Candidacies);
 
             var thirdQuery = secondQuery.Select(c=>c)
-                .Where(c=>!String.IsNullOrEmpty(c.Status))
+                .Where(c=>!c.Equals("N/A"))
                  .Skip(ExcludeRecords)
                 .Take(pageSize); 
             PagedResult<Candidacy> model = new PagedResult<Candidacy>();
@@ -110,6 +110,24 @@ namespace Tunrecrute.Controllers
             db.Candidacies.Update(cd);
             await db.SaveChangesAsync();
             return RedirectToAction("AdCandidacies",new { adId = adId });
+        }
+        [Authorize(Roles = "Employer")]
+        public async Task<IActionResult> ChangeStatusFromApplications(int adId, string candidateId, string status)
+        {
+            Candidacy cd = db.Candidacies.FirstOrDefault(a => a.AdvertisementId == adId && a.UserId.Equals(candidateId));
+            cd.Status = status;
+            db.Candidacies.Update(cd);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Applications");
+        }
+        [Authorize(Roles = "Employer")]
+        public async Task<IActionResult> ChangeStatusFromManagedApplications(int adId, string candidateId, string status)
+        {
+            Candidacy cd = db.Candidacies.FirstOrDefault(a => a.AdvertisementId == adId && a.UserId.Equals(candidateId));
+            cd.Status = status;
+            db.Candidacies.Update(cd);
+            await db.SaveChangesAsync();
+            return RedirectToAction("ManagedApplications");
         }
         [Authorize(Roles = "Candidate")]
         public async Task<IActionResult> Delete(int adId)

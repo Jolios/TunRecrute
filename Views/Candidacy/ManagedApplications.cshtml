@@ -36,17 +36,21 @@
                                     {
                                         foreach (Candidacy c in Model.Data)
                                         {
+
+
+                                        @if (!String.IsNullOrEmpty(c.Status))
+                                        {
                                 <tr class="candidates-list">
                                     <td class="title" style="margin-right: -70px;">
                                         <div class="thumb">
                                             <img src="~/uploads/UserImages/@c.User.Picture" class="img-fluid" alt="">
                                         </div>
                                         <div class="body">
-                                            <h5><a asp-action="ResumeForEmployer" asp-controller="Profile" asp-route-id="@c.User.Id" target="_blank">@c.User.Firstname @c.User.Lastname</a></h5>
+                                            <h5><a asp-action="Resume" asp-controller="Profile" asp-route-id="@c.User.Id" target="_blank">@c.User.Firstname @c.User.Lastname</a></h5>
                                         </div>
                                     </td>
                                     <td class="status">
-                                        <h5 style="color: #232630"><a asp-action="Show" asp-controller="Advertisement" asp-route-id="@c.Advertisement.Id" target="_blank">@c.Advertisement.Title</a></h5>
+                                        <h5 style="color: #232630"><a asp-action="Show" asp-controller="Advertisement" asp-route-id="@c.Advertisement.Id" target="_blank" style="margin-left:15px;">@c.Advertisement.Title</a></h5>
                                     </td>
                                     <td class="status">
                                         @if (c.Status.Equals("rejected"))
@@ -65,14 +69,17 @@
                                         @s
                                     </td>
                                     <td class="action">
-                                        @if (c.Status.Equals("rejected")) { 
-                                            <a asp-action="ChangeStatus" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="shortlisted" class="download"><i data-feather="check-circle"></i></a>
+                                        @if (c.Status.Equals("rejected"))
+                                        {
+                                            <a asp-action="ChangeStatusFromManagedApplications" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="shortlisted" class="download"><i data-feather="check-circle"></i></a>
                                         }
-                                        else if (c.Status.Equals("shortlisted")){
-                                        <a asp-action="ChangeStatus" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="rejected" class="remove"><i data-feather="x-circle"></i></a>
+                                        else if (c.Status.Equals("shortlisted"))
+                                        {
+                                        <a asp-action="ChangeStatusFromManagedApplications" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="rejected" class="remove"><i data-feather="x-circle"></i></a>
                                         }
                                     </td>
-                                </tr>
+                                </tr>       
+                                }
                                         }
                                     }
                                 </tbody>
@@ -118,12 +125,7 @@
                             </ul>
                             <ul class="delete">
                                 <li><i class="fas fa-power-off"></i><a asp-action="Logout" asp-controller="Account">Logout</a></li>
-                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
                             </ul>
-                            <!-- Modal -->
-                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
-                                @*{ render(controller('App\\Controller\\ProfileController::deactivate',{'id':app.user.id})) }}*@
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,10 @@
-﻿@using cloudscribe.Pagination.Models
+﻿@using cloudscribe.Pagination.Models 
+@inject SignInManager<User> signInManager
 @model PagedResult<Advertisement>
 @{
     Layout = "~/Views/Profile/_Layout.cshtml";
     ViewBag.Title = "My Jobs";
+    User user = await signInManager.UserManager.GetUserAsync(this.User);
 }
 
 <div class="alice-bg section-padding-bottom">
@@ -38,7 +40,7 @@
                                                     int s = 0;
                                                     foreach(Candidacy c in ad.Candidacies)
                                                     {
-                                                        if (!c.Status.Equals("rejected") || !c.Status.Equals("shortlisted")) s += 1;
+                                                        if (String.IsNullOrEmpty(c.Status)) s += 1;
                                                     }
                                                 }
                                                 
@@ -79,29 +81,25 @@
                     <div class="dashboard-sidebar">
                         <div class="company-info">
                             <div class="thumb">
-                                <img src="{{ asset('Uploads/User_Images/')~app.user.picture }}" class="img-fluid" alt="">
+                                <img src="~/uploads/UserImages/@user.Picture" class="img-fluid" alt="">
                             </div>
                             <div class="company-body">
-                                <h5>{{ app.user.compname }}</h5>
+                                <h5>@user.CompanyName</h5>
                             </div>
                         </div>
                         <div class="dashboard-menu">
                             <ul>
-                                <li><i class="fas fa-user"></i><a href="{{ path('edit_profile') }}">Edit Profile</a></li>
-                                <li class="active"><i class="fas fa-briefcase"></i><a href="{{ path('mes_annonces') }}l">Manage Jobs</a></li>
-                                <li><i class="fas fa-users"></i><a href="{{ path('candidature_index') }}">Manage Candidates</a></li>
-                                <li><i class="fas fa-calendar-check"></i><a href="{{ path('managed_applications') }}">Managed Applications</a></li>
-                                <li><i class="fas fa-plus-square"></i><a href="{{ path('annonce_new') }}">Post New Job</a></li>
+                                <li><i class="fas fa-user"></i><a asp-controller="Profile" asp-action="EditEmployerProfile">Edit Profile</a></li>
+                                <li class="active"><i class="fas fa-briefcase"></i><a asp-action="MyJobs" asp-controller="Advertisement">Manage Jobs</a></li>
+                                <li><i class="fas fa-users"></i><a asp-action="Applications" asp-controller="Candidacy">Manage Candidates</a></li>
+                                <li><i class="fas fa-calendar-check"></i><a asp-action="ManagedApplications" asp-controller="Candidacy">Managed Applications</a></li>
+                                <li><i class="fas fa-plus-square"></i><a asp-action="Create" asp-controller="Advertisement">Post New Job</a></li>
                             </ul>
 
                             <ul class="delete">
-                                <li><i class="fas fa-power-off"></i><a href="{{ path('app_logout') }}">Logout</a></li>
-                                <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
+                                <li><i class="fas fa-power-off"></i><a asp-action="Logout" asp-controller="Account">Logout</a></li>
                             </ul>
-                            <!-- Modal -->
-                            <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
-                                {{ render(controller('App\\Controller\\ProfileController::deactivate',{'id':app.user.id})) }}
-                            </div>
+                         
                         </div>
                     </div>
                 </div>

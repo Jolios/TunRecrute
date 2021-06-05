@@ -33,8 +33,7 @@
                                     {
                                         foreach (Candidacy c in Model.Data)
                                         {
-                                            if (!c.Status.Equals("rejected") && !c.Status.Equals("shortlisted"))
-                                            {
+
                                 <tr class="candidates-list">
                                     <td class="title">
                                         <div class="thumb">
@@ -45,13 +44,18 @@
                                         </div>
                                     </td>
                                     <td class="status">
-                                        {@if (String.IsNullOrEmpty(c.Status))
+                                        @if (String.IsNullOrEmpty(c.Status))
                                         {
-                                            <span>>N / A</span>
+                                            <span>N / A</span>
                                         }
                                         else if (c.Status.Equals("shortlisted"))
                                         {
-                                            <i data-feather="check-circle"></i><span>Shortlisted</span>
+                                            <i data-feather="check-circle" style="color: #01d13d;"></i><span style="color: #01d13d;"> Shortlisted</span>
+                                        }
+                                        else if (c.Status.Equals("rejected"))
+                                        {
+                                            <i data-feather="x-circle" style="color: #ff3366;"></i><span style="color: #ff3366;">Rejected</span>
+
                                         }
                                     </td>
                                     <td class="action">
@@ -59,7 +63,7 @@
                                         <a asp-action="ChangeStatus" asp-controller="Candidacy" asp-route-adId="@c.Advertisement.Id" asp-route-candidateId="@c.UserId" asp-route-status="rejected" class="remove"><i data-feather="x-circle"></i></a>
                                     </td>
                                 </tr>
-                                            }
+                                            
                                         }
                                     }
 

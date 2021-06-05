@@ -207,7 +207,6 @@ namespace Tunrecrute.Controllers
             return View(ad);
             
         }
-        [HttpPost]
         [Authorize(Roles ="Employer")]
         public async Task<IActionResult> Delete(int? id)
         {
