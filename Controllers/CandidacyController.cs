@@ -83,11 +83,11 @@ namespace Tunrecrute.Controllers
             return View(model);
         }
         [Authorize(Roles = "Candidate")]
-        public async Task<IActionResult> Create(Advertisement ad)
+        public async Task<IActionResult> Create(int adId)
         {
             User currentUser = await signInManager.UserManager.GetUserAsync(this.User);
             Candidacy cd = new Candidacy();
-            cd.Advertisement = ad;
+            cd.Advertisement = db.Advertisements.FirstOrDefault(a=>a.Id == adId);
             cd.Date = DateTime.Now;
             cd.User = currentUser;
             cd.IsDeleted = 0;
@@ -99,7 +99,7 @@ namespace Tunrecrute.Controllers
                 Timeout = 1500,
                 Layout = "topCenter"
             });
-            return RedirectToAction("Show","Advertisement",new { id = ad.Id });
+            return RedirectToAction("Show","Advertisement",new { id = adId });
         }
 
         [Authorize(Roles = "Employer")]
